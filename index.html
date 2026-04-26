@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carolinne Braz — Estrutura&ccedil;&atilde;o Operacional · Energia por Assinatura</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --navy:#08172E; --navy-mid:#0D2240; --navy-lit:#122850;
+  --gold:#C9A43A; --gold-h:#D9B54A; --gold-pale:#F5EBCF;
+  --gold-dim:rgba(201,164,58,0.1); --gold-ln:rgba(201,164,58,0.2);
+  --white:#FFFFFF; --body:#A8B8CC; --muted:#627084;
+  --cream:#F9F4EA; --navy-deep:#050F1E;
+}
+html{scroll-behavior:smooth;}
+body{background:var(--navy);color:var(--white);font-family:'DM Sans',sans-serif;font-weight:300;line-height:1.75;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+::-webkit-scrollbar{width:3px;} ::-webkit-scrollbar-track{background:var(--navy);} ::-webkit-scrollbar-thumb{background:var(--gold-ln);}
+h1,h2,h3{font-family:'Cormorant Garamond',serif;font-weight:400;line-height:1.12;}
+a{text-decoration:none;color:inherit;}
+.container{max-width:1140px;margin:0 auto;padding:0 2.5rem;}
+.sec{padding:7rem 0;}
+.sec-alt{background:var(--navy-mid);}
+.sec-white{background:var(--cream);color:var(--navy);}
+.eyebrow{display:inline-flex;align-items:center;gap:0.6rem;font-size:0.6rem;font-weight:500;letter-spacing:0.24em;text-transform:uppercase;color:var(--gold);margin-bottom:1.1rem;}
+.eyebrow::before{content:'';width:22px;height:1px;background:var(--gold);flex-shrink:0;}
+.eyebrow-dark{color:var(--navy);opacity:0.5;}
+.eyebrow-dark::before{background:var(--navy);opacity:0.4;}
+.stitle{font-size:clamp(1.9rem,3.2vw,2.9rem);margin-bottom:1rem;}
+.stitle em{color:var(--gold-pale);font-style:italic;}
+.stitle-dark em{color:#8B6914;}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:0.55rem;font-family:'DM Sans',sans-serif;font-size:0.7rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;padding:0.9rem 1.75rem;border-radius:2px;transition:all 0.2s;border:none;cursor:pointer;}
+.btn-g{background:var(--gold);color:var(--navy);}
+.btn-g:hover{background:var(--gold-h);transform:translateY(-2px);box-shadow:0 10px 32px rgba(201,164,58,0.28);}
+.btn-o{background:transparent;color:var(--gold);border:1px solid var(--gold-ln);}
+.btn-o:hover{border-color:var(--gold);background:var(--gold-dim);}
+.btn-lg{padding:1.05rem 2.2rem;font-size:0.72rem;}
+.btn-dark{background:var(--navy);color:var(--white);}
+.btn-dark:hover{background:var(--navy-lit);transform:translateY(-2px);}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;height:62px;display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem;background:rgba(8,23,46,0.94);backdrop-filter:blur(20px);border-bottom:1px solid var(--gold-ln);}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:1rem;letter-spacing:0.06em;display:flex;align-items:center;gap:0.65rem;}
+.nav-links{display:flex;gap:2rem;list-style:none;}
+.nav-links a{font-size:0.65rem;font-weight:400;letter-spacing:0.12em;text-transform:uppercase;color:var(--body);transition:color 0.2s;}
+.nav-links a:hover{color:var(--gold);}
+.nav-cta{display:flex;align-items:center;gap:0.9rem;}
+
+/* ═══ HERO ═══ */
+.hero{min-height:100vh;display:flex;align-items:center;padding:8rem 0 4rem;position:relative;overflow:hidden;}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(201,164,58,0.022) 1px,transparent 1px),linear-gradient(90deg,rgba(201,164,58,0.022) 1px,transparent 1px);background-size:72px 72px;mask-image:radial-gradient(ellipse 80% 65% at 25% 50%,black 20%,transparent 100%);pointer-events:none;}
+.hero-glow{position:absolute;top:-5%;right:-5%;width:650px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(201,164,58,0.06) 0%,transparent 65%);pointer-events:none;}
+.hero-inner{display:grid;grid-template-columns:1fr 400px;gap:5rem;align-items:center;position:relative;z-index:1;}
+.hero-kicker{display:flex;align-items:center;gap:0.8rem;margin-bottom:1.5rem;}
+.hero-kicker-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);flex-shrink:0;}
+.hero-kicker-txt{font-size:0.6rem;font-weight:500;letter-spacing:0.24em;text-transform:uppercase;color:var(--gold);}
+.hero-h1{font-size:clamp(2.8rem,5.5vw,4.4rem);letter-spacing:-0.02em;color:var(--white);margin-bottom:0.5rem;line-height:1.06;}
+.hero-h1 em{color:var(--gold-pale);font-style:italic;}
+.hero-h1-sub{font-family:'Cormorant Garamond',serif;font-size:clamp(1.15rem,2vw,1.5rem);color:rgba(245,235,207,0.65);font-style:italic;font-weight:300;margin-bottom:1.75rem;line-height:1.35;}
+.hero-desc{font-size:0.97rem;color:var(--body);line-height:1.85;max-width:480px;margin-bottom:2.25rem;}
+.hero-desc strong{color:var(--gold-pale);font-weight:400;}
+.hero-ctas{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:2.5rem;}
+.hero-social-proof{display:flex;align-items:center;gap:0.75rem;}
+.hsp-line{width:1px;height:28px;background:var(--gold-ln);}
+.hsp-txt{font-size:0.7rem;color:var(--muted);line-height:1.5;}
+.hsp-txt strong{color:var(--body);font-weight:400;display:block;}
+
+/* Hero photo */
+.hero-photo-col{position:relative;display:flex;align-items:flex-end;justify-content:center;}
+.hero-photo-frame{position:relative;width:100%;max-width:380px;}
+.hero-photo-frame::before{content:'';position:absolute;top:-14px;left:-14px;width:55px;height:55px;border-top:2px solid var(--gold);border-left:2px solid var(--gold);z-index:2;pointer-events:none;}
+.hero-photo-frame::after{content:'';position:absolute;bottom:12px;right:-14px;width:55px;height:55px;border-bottom:2px solid var(--gold);border-right:2px solid var(--gold);z-index:2;pointer-events:none;}
+.hero-photo-wrap{position:relative;overflow:hidden;border-radius:2px;}
+.hero-photo-wrap img{display:block;width:100%;height:auto;position:relative;z-index:1;}
+.hero-photo-wrap-inner{position:relative;background:#c5c5c5;}
+.hero-photo-wrap-inner::after{content:'';position:absolute;bottom:0;left:0;right:0;height:38%;background:linear-gradient(to top,var(--navy) 0%,transparent 100%);z-index:2;pointer-events:none;}
+.hero-photo-line{height:3px;background:linear-gradient(90deg,var(--gold),rgba(201,164,58,0.15),transparent);position:relative;z-index:3;}
+.hero-badge{position:absolute;bottom:52px;left:-28px;background:var(--navy-deep);border:1px solid var(--gold-ln);border-radius:2px;padding:0.8rem 1.15rem;z-index:10;min-width:170px;}
+.hero-badge::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gold);}
+.hb-lbl{font-size:0.5rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--muted);margin-bottom:0.22rem;}
+.hb-val{font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--gold-pale);line-height:1.25;}
+
+/* ═══ TRUST BAR ═══ */
+.trust-bar{background:var(--navy-deep);border-top:1px solid rgba(201,164,58,0.08);border-bottom:1px solid rgba(201,164,58,0.08);padding:1.75rem 0;}
+.trust-bar-inner{display:flex;align-items:center;justify-content:center;gap:0;flex-wrap:wrap;}
+.trust-item{display:flex;flex-direction:column;align-items:center;padding:0 3rem;position:relative;}
+.trust-item:not(:last-child)::after{content:'';position:absolute;right:0;top:50%;transform:translateY(-50%);height:28px;width:1px;background:var(--gold-ln);}
+.trust-num{font-family:'Cormorant Garamond',serif;font-size:2rem;color:var(--gold);line-height:1;}
+.trust-lbl{font-size:0.6rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);margin-top:0.2rem;}
+
+/* ═══ QUALIFICAÇÃO (Para quem é) ═══ */
+.qual-sec{padding:5.5rem 0;background:var(--navy-mid);}
+.qual-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;}
+.qual-list{display:flex;flex-direction:column;gap:0;margin-top:2rem;}
+.qual-item{display:flex;align-items:flex-start;gap:1rem;padding:1.1rem 0;border-bottom:1px solid rgba(255,255,255,0.05);}
+.qual-item:last-child{border-bottom:none;}
+.qual-check{width:18px;height:18px;border-radius:50%;border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:0.15rem;}
+.qual-check svg{width:8px;height:8px;}
+.qual-txt{font-size:0.9rem;color:var(--body);line-height:1.6;}
+.qual-txt strong{color:var(--white);font-weight:400;}
+.qual-nope{background:rgba(201,164,58,0.04);border:1px solid var(--gold-ln);border-radius:2px;padding:2rem;}
+.qual-nope-title{font-family:'Cormorant Garamond',serif;font-size:1.05rem;color:var(--gold-pale);margin-bottom:1.2rem;font-style:italic;}
+.qual-nope-list{display:flex;flex-direction:column;gap:0.75rem;}
+.qual-nope-item{font-size:0.82rem;color:var(--muted);display:flex;gap:0.7rem;align-items:flex-start;line-height:1.5;}
+.qual-nope-item::before{content:'×';color:rgba(201,164,58,0.35);font-size:1rem;flex-shrink:0;line-height:1.3;}
+
+/* ═══ PROBLEMA ═══ */
+.prob-lay{display:grid;grid-template-columns:1fr 1fr;gap:5.5rem;align-items:start;}
+.pain-list{margin-top:0.5rem;}
+.pain-item{display:grid;grid-template-columns:1px 1fr;gap:1.25rem;padding:1.25rem 0;border-bottom:1px solid rgba(255,255,255,0.05);}
+.pain-item:last-child{border-bottom:none;}
+.pain-bar{background:var(--gold-ln);align-self:stretch;margin-top:0.45rem;position:relative;overflow:hidden;}
+.pain-bar::after{content:'';position:absolute;top:0;left:0;right:0;height:30%;background:var(--gold);transition:height 0.45s ease;}
+.pain-item:hover .pain-bar::after{height:100%;}
+.pain-txt{font-size:0.91rem;color:var(--body);line-height:1.72;}
+.pain-txt strong{color:var(--white);font-weight:400;}
+.insight-wrap{position:sticky;top:5.5rem;}
+.insight-card{background:var(--navy-lit);border:1px solid var(--gold-ln);border-radius:2px;padding:2.5rem;position:relative;overflow:hidden;}
+.insight-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(to bottom,var(--gold),rgba(201,164,58,0.1));}
+.iq{font-family:'Cormorant Garamond',serif;font-size:1.65rem;line-height:1.38;color:var(--white);margin-bottom:1.75rem;}
+.iq em{color:var(--gold);font-style:italic;}
+.idiv{width:28px;height:1px;background:var(--gold);margin-bottom:1.25rem;}
+.inote{font-size:0.83rem;color:var(--body);line-height:1.8;}
+
+/* ═══ MÉTODO OSE ═══ */
+.method-sec{background:var(--navy-deep);padding:7rem 0;position:relative;overflow:hidden;}
+.method-sec::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold-ln),transparent);}
+.method-sec::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold-ln),transparent);}
+.method-name{font-family:'Cormorant Garamond',serif;font-size:clamp(3rem,6vw,5.5rem);font-weight:300;color:rgba(201,164,58,0.08);line-height:1;letter-spacing:-0.02em;position:absolute;top:2rem;right:2rem;pointer-events:none;user-select:none;}
+.method-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(201,164,58,0.1);border:1px solid rgba(201,164,58,0.1);border-radius:2px;overflow:hidden;margin-top:3.5rem;position:relative;z-index:1;}
+.mstep{background:var(--navy-deep);padding:2.5rem 2rem;position:relative;overflow:hidden;transition:background 0.3s;}
+.mstep:hover{background:var(--navy-lit);}
+.mstep-accent{position:absolute;top:0;left:0;right:0;height:2px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform 0.4s ease;}
+.mstep:hover .mstep-accent{transform:scaleX(1);}
+.mstep-letter{font-family:'Cormorant Garamond',serif;font-size:4.5rem;font-weight:300;color:rgba(201,164,58,0.12);line-height:1;margin-bottom:0.5rem;}
+.mstep-phase{font-size:0.55rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold);margin-bottom:0.6rem;}
+.mstep-title{font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--white);margin-bottom:0.8rem;}
+.mstep-desc{font-size:0.8rem;color:var(--body);line-height:1.75;}
+.mstep-deliverables{margin-top:1.25rem;display:flex;flex-direction:column;gap:0.35rem;}
+.mstep-del{font-size:0.72rem;color:var(--muted);display:flex;gap:0.55rem;align-items:flex-start;}
+.mstep-del::before{content:'→';color:var(--gold);flex-shrink:0;font-size:0.65rem;margin-top:0.1rem;}
+
+/* ═══ SOLAR BANNER ═══ */
+.solar-banner{position:relative;overflow:hidden;height:260px;}
+.solar-banner img{width:100%;height:100%;object-fit:cover;object-position:center;filter:brightness(0.45) saturate(0.7);}
+.solar-banner-overlay{position:absolute;inset:0;background:linear-gradient(to right,rgba(8,23,46,0.96) 0%,rgba(8,23,46,0.55) 55%,rgba(8,23,46,0.1) 100%);display:flex;align-items:center;}
+.solar-banner-content{padding:0 2.5rem;max-width:1140px;margin:0 auto;width:100%;}
+.solar-banner-eyebrow{font-size:0.56rem;letter-spacing:0.24em;text-transform:uppercase;color:var(--gold);margin-bottom:0.65rem;display:flex;align-items:center;gap:0.6rem;opacity:0.9;}
+.solar-banner-eyebrow::before{content:'';width:20px;height:1px;background:var(--gold);}
+.solar-banner-txt{font-family:'Cormorant Garamond',serif;font-size:clamp(1.4rem,2.8vw,2.1rem);color:var(--white);line-height:1.3;}
+.solar-banner-txt em{color:var(--gold-pale);font-style:italic;}
+
+/* ═══ SERVIÇOS ═══ */
+.srv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--gold-ln);border:1px solid var(--gold-ln);border-radius:2px;overflow:hidden;margin-top:3rem;}
+.scard{background:var(--navy-mid);padding:2rem 1.75rem;position:relative;overflow:hidden;transition:background 0.25s;}
+.scard:hover{background:var(--navy-lit);}
+.sbar{position:absolute;top:0;left:0;right:0;height:2px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform 0.35s cubic-bezier(.4,0,.2,1);}
+.scard:hover .sbar{transform:scaleX(1);}
+.snum{font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:300;color:rgba(201,164,58,0.15);line-height:1;margin-bottom:1rem;}
+.sico{width:30px;height:30px;color:var(--gold);margin-bottom:0.9rem;}
+.sttl{font-size:0.85rem;font-weight:500;color:var(--white);margin-bottom:0.45rem;}
+.sdsc{font-size:0.76rem;color:var(--body);line-height:1.65;}
+
+/* ═══ PROVA / RESULTADOS ═══ */
+.proof-sec{padding:7rem 0;background:var(--navy-mid);color:var(--white);}
+.proof-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3rem;}
+.proof-card{background:var(--navy-lit);border:1px solid var(--gold-ln);border-radius:2px;padding:2rem;position:relative;overflow:hidden;transition:box-shadow 0.25s,border-color 0.25s;}
+.proof-card:hover{box-shadow:0 8px 32px rgba(0,0,0,0.25);border-color:rgba(201,164,58,0.45);}
+.proof-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gold);}
+.proof-card-ico{width:36px;height:36px;color:var(--gold);margin-bottom:1rem;}
+.proof-stat{font-family:'Cormorant Garamond',serif;font-size:2.8rem;color:var(--white);line-height:1;margin-bottom:0.3rem;}
+.proof-stat span{color:var(--gold);}
+.proof-label{font-size:0.72rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);margin-bottom:0.75rem;}
+.proof-desc{font-size:0.82rem;color:var(--body);line-height:1.65;}
+.proof-disclaimer{text-align:center;margin-top:2.25rem;font-size:0.7rem;color:var(--muted);font-style:italic;}
+
+/* Depoimento */
+.testemunho{margin-top:4rem;background:var(--navy-lit);border:1px solid var(--gold-ln);border-radius:2px;padding:2.5rem;position:relative;max-width:780px;margin-left:auto;margin-right:auto;}
+.testemunho::before{content:'"';font-family:'Cormorant Garamond',serif;font-size:5rem;color:rgba(201,164,58,0.2);position:absolute;top:0.5rem;left:1.5rem;line-height:1;}
+.test-txt{font-family:'Cormorant Garamond',serif;font-size:1.3rem;line-height:1.55;color:var(--gold-pale);font-style:italic;margin-bottom:1.5rem;padding-top:1.5rem;}
+.test-author{display:flex;align-items:center;gap:0.9rem;}
+.test-av{width:38px;height:38px;border-radius:50%;background:var(--navy);border:1.5px solid var(--gold-ln);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:0.9rem;color:var(--gold);}
+.test-name{font-size:0.8rem;font-weight:500;color:var(--white);}
+.test-role{font-size:0.68rem;color:var(--muted);}
+
+/* ═══ DIFERENCIAL ═══ */
+.dif-lay{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start;}
+.ck-list{display:flex;flex-direction:column;gap:0.6rem;margin-top:2rem;}
+.ck-item{display:flex;gap:0.9rem;align-items:flex-start;padding:0.9rem 1.1rem;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-radius:2px;transition:border-color 0.2s,background 0.2s;}
+.ck-item:hover{border-color:var(--gold-ln);background:var(--gold-dim);}
+.ck-ico{width:20px;height:20px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:0.05rem;}
+.ck-ico svg{width:10px;height:10px;}
+.ck-txt{font-size:0.87rem;color:var(--body);}
+.dif-qbox{background:var(--navy-lit);border:1px solid var(--gold-ln);border-radius:2px;padding:2.5rem;position:relative;overflow:hidden;}
+.dif-qbox::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),transparent);}
+.dif-qbox::after{content:'"';position:absolute;top:0.5rem;right:1.25rem;font-family:'Cormorant Garamond',serif;font-size:6rem;color:rgba(201,164,58,0.06);line-height:1;pointer-events:none;}
+.dif-q{font-family:'Cormorant Garamond',serif;font-size:1.5rem;line-height:1.42;color:var(--white);font-style:italic;margin-bottom:1.5rem;position:relative;z-index:1;}
+.dif-q span{color:var(--gold);}
+.dif-au{font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);}
+
+/* ═══ RESULTADO ═══ */
+.res-lay{display:grid;grid-template-columns:1fr 380px;gap:5rem;align-items:start;}
+.res-list{display:flex;flex-direction:column;gap:0;margin-top:2rem;}
+.res-item{display:flex;align-items:center;gap:0.9rem;padding:0.95rem 0;border-bottom:1px solid rgba(255,255,255,0.05);}
+.res-item:first-child{padding-top:0;}
+.res-item:last-child{border-bottom:none;}
+.res-arr{color:var(--gold);font-size:0.8rem;flex-shrink:0;transition:transform 0.2s;}
+.res-item:hover .res-arr{transform:translateX(4px);}
+.res-txt{font-size:0.88rem;color:var(--body);line-height:1.6;}
+.res-callout{margin-top:2rem;padding:1.4rem 1.6rem;border-left:2px solid var(--gold);background:rgba(201,164,58,0.04);}
+.res-callout p{font-family:'Cormorant Garamond',serif;font-size:1.15rem;color:var(--gold-pale);font-style:italic;line-height:1.55;}
+.res-cta{background:var(--navy-lit);border:1px solid var(--gold-ln);border-radius:2px;overflow:hidden;position:sticky;top:5rem;}
+.res-cta-top{height:3px;background:linear-gradient(90deg,var(--gold),rgba(201,164,58,0.2));}
+.res-cta-bd{padding:1.75rem;}
+.res-cta-bd h3{font-family:'Cormorant Garamond',serif;font-size:1.35rem;color:var(--white);margin-bottom:0.7rem;line-height:1.3;}
+.res-cta-bd p{font-size:0.8rem;color:var(--body);line-height:1.78;margin-bottom:1.4rem;}
+
+/* ═══ SOBRE ═══ */
+.sob-lay{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;}
+.sob-txt p{font-size:0.93rem;color:var(--body);line-height:1.88;margin-bottom:1.2rem;}
+.sob-txt p strong{color:var(--gold-pale);font-weight:400;}
+.sob-photo-card{position:relative;height:100%;display:flex;flex-direction:column;}
+.sob-photo-card::after{content:'';position:absolute;bottom:-8px;right:-8px;width:100%;height:100%;border:1px solid rgba(201,164,58,0.12);border-radius:2px;pointer-events:none;z-index:0;}
+.sob-photo-frame{position:relative;border-radius:2px;overflow:hidden;border:1px solid var(--gold-ln);z-index:1;height:100%;}
+.sob-photo-frame img{display:block;width:100%;height:100%;min-height:420px;object-fit:cover;object-position:center top;filter:brightness(0.9) saturate(0.85);transition:filter 0.4s ease;}
+.sob-photo-card:hover .sob-photo-frame img{filter:brightness(0.97) saturate(1);}
+.sob-photo-overlay{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to top,rgba(8,23,46,0.92) 0%,transparent 100%);padding:1.5rem 1.5rem 1.2rem;}
+.sob-photo-name{font-family:'Cormorant Garamond',serif;font-size:1.25rem;color:var(--white);margin-bottom:0.2rem;}
+.sob-photo-role{font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);}
+.sob-tags{display:flex;flex-wrap:wrap;gap:0.35rem;margin-top:1.5rem;}
+.sob-tag{font-size:0.62rem;letter-spacing:0.06em;color:var(--body);background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);padding:0.22rem 0.6rem;border-radius:2px;}
+
+/* ═══ CTA FINAL ═══ */
+.cta-fin{padding:8rem 0;position:relative;overflow:hidden;text-align:center;background:var(--navy-deep);}
+.cta-fin::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:600px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
+.cta-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:350px;background:radial-gradient(ellipse,rgba(201,164,58,0.07) 0%,transparent 70%);pointer-events:none;}
+.cta-fin-in{position:relative;z-index:1;max-width:680px;margin:0 auto;}
+.cta-fin h2{font-size:clamp(2rem,4.5vw,3.5rem);color:var(--white);margin-bottom:0.75rem;}
+.cta-fin h2 em{color:var(--gold-pale);font-style:italic;}
+.cta-fin-sub{font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:rgba(245,235,207,0.5);font-style:italic;margin-bottom:1.5rem;}
+.cta-fin p{font-size:0.95rem;color:var(--body);margin-bottom:2.5rem;line-height:1.8;}
+.cta-urgency{display:inline-flex;align-items:center;gap:0.6rem;font-size:0.65rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-top:1.5rem;}
+.cta-urgency-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
+
+/* ═══ PRODUTO DIGITAL ═══ */
+.prod-lay{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;}
+.prod-ctx{background:rgba(201,164,58,0.04);border:1px solid var(--gold-ln);border-radius:2px;padding:1.5rem;margin:1.75rem 0 1.5rem;}
+.prod-ctx-txt{font-size:0.87rem;color:var(--body);line-height:1.85;}
+.prod-ctx-txt strong{color:var(--gold-pale);font-weight:400;}
+.parceria{display:flex;gap:0.8rem;align-items:flex-start;padding:1rem 1.2rem;background:rgba(201,164,58,0.06);border:1px solid var(--gold-ln);border-radius:2px;margin-bottom:2rem;}
+.pdot{width:7px;height:7px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:0.35rem;}
+.ptxt{font-size:0.8rem;color:var(--body);line-height:1.6;}
+.ptxt strong{color:var(--gold-pale);font-weight:400;}
+.pcards{display:flex;flex-direction:column;gap:1rem;}
+.pcard{background:var(--navy-mid);border:1px solid var(--gold-ln);border-radius:2px;padding:1.75rem;position:relative;overflow:hidden;transition:border-color 0.25s,transform 0.25s;}
+.pcard:hover{border-color:rgba(201,164,58,0.45);transform:translateX(5px);}
+.pcard-acc{position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--gold);transform:scaleY(0);transform-origin:bottom;transition:transform 0.35s ease;}
+.pcard:hover .pcard-acc{transform:scaleY(1);}
+.pcard-hd{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;margin-bottom:0.7rem;}
+.pcard-ico{width:34px;height:34px;color:var(--gold);flex-shrink:0;}
+.pcard-badge{font-size:0.55rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--navy);background:var(--gold);padding:0.22rem 0.55rem;border-radius:2px;white-space:nowrap;align-self:flex-start;}
+.pcard-ttl{font-size:0.92rem;font-weight:500;color:var(--white);margin-bottom:0.45rem;}
+.pcard-dsc{font-size:0.78rem;color:var(--body);line-height:1.7;}
+.pcard-tags{display:flex;flex-wrap:wrap;gap:0.35rem;margin-top:0.9rem;}
+.ptag{font-size:0.62rem;letter-spacing:0.08em;color:var(--gold);background:rgba(201,164,58,0.08);border:1px solid rgba(201,164,58,0.16);padding:0.18rem 0.55rem;border-radius:2px;}
+
+/* ═══ FOOTER ═══ */
+footer{background:var(--navy-deep);border-top:1px solid var(--gold-ln);padding:3rem 0 2.5rem;text-align:center;}
+.ft{font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--gold-pale);font-style:italic;line-height:1.58;margin-bottom:1.4rem;}
+.fs{font-size:0.6rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);}
+
+/* ═══ DIVIDER ═══ */
+.divider-wrap{padding:1.2rem 0;}
+.sec-divider{display:flex;align-items:center;gap:1.2rem;max-width:1140px;padding:0 2.5rem;margin:0 auto;opacity:0.25;}
+.sec-divider::before,.sec-divider::after{content:'';flex:1;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);}
+.sec-divider-ico{width:5px;height:5px;border:1px solid var(--gold);transform:rotate(45deg);flex-shrink:0;}
+
+/* ═══ REVEAL ═══ */
+.rv{opacity:0;transform:translateY(20px);transition:opacity 0.7s ease,transform 0.7s ease;}
+.rv.on{opacity:1;transform:translateY(0);}
+.d1{transition-delay:0.1s}.d2{transition-delay:0.2s}.d3{transition-delay:0.3s}
+.d4{transition-delay:0.4s}.d5{transition-delay:0.5s}
+
+/* ═══ RESPONSIVE ═══ */
+@media(max-width:960px){
+  .hero-inner,.prob-lay,.prod-lay,.dif-lay,.res-lay,.sob-lay,.qual-grid{grid-template-columns:1fr;gap:3rem;}
+  .hero-photo-col{order:-1;}
+  .hero-photo-frame{max-width:300px;margin:0 auto;}
+  .hero-badge{display:none;}
+  .insight-wrap{display:none;}
+  .res-cta{position:static;}
+  .srv-grid,.method-grid{grid-template-columns:1fr 1fr;}
+  .proof-grid{grid-template-columns:1fr 1fr;}
+  .trust-bar-inner{gap:0;}
+  .trust-item{padding:0 1.5rem;}
+  .solar-banner{height:190px;}
+}
+@media(max-width:600px){
+  .container{padding:0 1.25rem;}
+  .sec{padding:4.5rem 0;}
+  nav{padding:0 1.25rem;}
+  .nav-links{display:none;}
+  .srv-grid,.method-grid,.proof-grid{grid-template-columns:1fr;}
+  .hero{padding:6rem 0 3.5rem;}
+  .solar-banner{height:150px;}
+  .solar-banner-txt{font-size:1.15rem;}
+  .trust-bar-inner{flex-direction:column;gap:1.5rem;}
+  .trust-item::after{display:none;}
+  .trust-item{padding:0;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <svg class="sol" width="23" height="23" viewBox="0 0 26 26" fill="none">
+      <circle cx="13" cy="13" r="4.5" stroke="#C9A43A" stroke-width="1.2"/>
+      <line x1="13" y1="1.5" x2="13" y2="5" stroke="#C9A43A" stroke-width="1.2" stroke-linecap="round"/>
+      <line x1="13" y1="21" x2="13" y2="24.5" stroke="#C9A43A" stroke-width="1.2" stroke-linecap="round"/>
+      <line x1="1.5" y1="13" x2="5" y2="13" stroke="#C9A43A" stroke-width="1.2" stroke-linecap="round"/>
+      <line x1="21" y1="13" x2="24.5" y2="13" stroke="#C9A43A" stroke-width="1.2" stroke-linecap="round"/>
+      <line x1="4.4" y1="4.4" x2="6.8" y2="6.8" stroke="#C9A43A" stroke-width="1.2" stroke-linecap="round"/>
+      <line x1="19.2" y1="19.2" x2="21.6" y2="21.6" stroke="#C9A43A" stroke-width="1.2" stroke-linecap="round"/>
+      <line x1="21.6" y1="4.4" x2="19.2" y2="6.8" stroke="#C9A43A" stroke-width="1.2" stroke-linecap="round"/>
+      <line x1="6.8" y1="19.2" x2="4.4" y2="21.6" stroke="#C9A43A" stroke-width="1.2" stroke-linecap="round"/>
+    </svg>
+    Carolinne Braz
+  </a>
+  <ul class="nav-links">
+    <li><a href="#diagnostico">M&eacute;todo</a></li>
+    <li><a href="#servicos">Servi&ccedil;os</a></li>
+    <li><a href="#resultados">Resultados</a></li>
+    <li><a href="#sobre">Sobre</a></li>
+  </ul>
+  <div class="nav-cta">
+    <a href="https://wa.me/5585981575800" class="btn btn-g" style="font-size:0.62rem;padding:.68rem 1.3rem;">Solicitar Diagn&oacute;stico <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="container">
+    <div class="hero-inner">
+      <div>
+        <div class="hero-kicker">
+          <div class="hero-kicker-dot"></div>
+          <div class="hero-kicker-txt">Consultoria Operacional &middot; Energia por Assinatura</div>
+        </div>
+        <h1 class="hero-h1">Sua empresa<br>fatura. <em>Mas a opera&ccedil;&atilde;o<br>est&aacute; te custando<br>mais do que deveria.</em></h1>
+        <p class="hero-h1-sub">Estruturo a operação de empresas de energia para que o crescimento pare de gerar caos — e comece a gerar previsibilidade e resultado.</p>
+        <p class="hero-desc">Empresas que crescem sem rever processos perdem receita em faturamento inconsistente, retrabalho acumulado e depend&ecirc;ncia de pessoas. <strong>Eu j&aacute; estive dentro dessas opera&ccedil;&otilde;es — e sei exatamente onde está o problema.</strong></p>
+        <div class="hero-ctas">
+          <a href="https://wa.me/5585981575800" class="btn btn-g btn-lg">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            Solicitar Diagn&oacute;stico Gratuito
+          </a>
+          <a href="#diagnostico" class="btn btn-o">Ver o M&eacute;todo OSE</a>
+        </div>
+        <div class="hero-social-proof">
+          <div class="hsp-txt">
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-photo-col">
+        <div class="hero-photo-frame">
+          <div class="hero-photo-wrap">
+            <div class="hero-photo-wrap-inner">
+              <img src="./Imagens/hero.jpg" alt="Carolinne Braz" />
+            </div>
+          </div>
+          <div class="hero-photo-line"></div>
+          <div class="hero-badge">
+            <div class="hb-lbl">Especialidade</div>
+            <div class="hb-val">Energia por Assinatura</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST BAR -->
+<div class="trust-bar">
+  <div class="trust-bar-inner">
+    <div class="trust-item rv">
+      <div class="trust-num">+4 <span style="font-size:1.2rem;color:var(--gold);">anos</span></div>
+      <div class="trust-lbl">no setor de energia solar</div>
+    </div>
+    <div class="trust-item rv d1">
+      <div class="trust-num">2<span style="font-size:1.2rem;color:var(--gold);"span></div>
+      <div class="trust-lbl">opera&ccedil;&otilde;es estruturadas do zero</div>
+    </div>
+    <div class="trust-item rv d2">
+      <div class="trust-num" style="font-size:1.5rem;">+11</div>
+      <div class="trust-lbl">profissionais treinados no setor</div>
+    </div>
+  </div>
+</div>
+
+<!-- SOLAR BANNER -->
+<div class="solar-banner rv">
+  <img src="./Imagens/solar.jpg" alt="Usina solar fotovoltaica" />
+  <div class="solar-banner-overlay">
+    <div class="solar-banner-content">
+      <div class="solar-banner-eyebrow">Pr&eacute;sence no campo</div>
+      <div class="solar-banner-txt">N&atilde;o terceirizo o entendimento do seu neg&oacute;cio.<br><em>Conhe&ccedil;o o setor de dentro — da usina à gestão.</em></div>
+    </div>
+  </div>
+</div>
+
+<!-- QUALIFICAÇÃO — Para quem é (movida para cima) -->
+<section class="qual-sec" id="para-quem">
+  <div class="container">
+    <div class="qual-grid">
+      <div class="rv">
+        <span class="eyebrow">Para quem &eacute;</span>
+        <h2 class="stitle">Voc&ecirc; &eacute; o cliente certo se sua empresa<br><em>j&aacute; vende — mas opera no limite</em></h2>
+        <div class="qual-list">
+          <div class="qual-item rv">
+            <div class="qual-check"><svg viewBox="0 0 10 8" fill="none"><polyline points="1,4 3.5,6.5 9,1" stroke="#C9A43A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div class="qual-txt"><strong>J&aacute; fatura</strong> e est&aacute; crescendo — mas a opera&ccedil;&atilde;o n&atilde;o acompanha o ritmo comercial</div>
+          </div>
+          <div class="qual-item rv d1">
+            <div class="qual-check"><svg viewBox="0 0 10 8" fill="none"><polyline points="1,4 3.5,6.5 9,1" stroke="#C9A43A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div class="qual-txt"><strong>Distribui ou vai distribuir</strong> energia por assinatura e precisa de opera&ccedil;&atilde;o que escale</div>
+          </div>
+          <div class="qual-item rv d2">
+            <div class="qual-check"><svg viewBox="0 0 10 8" fill="none"><polyline points="1,4 3.5,6.5 9,1" stroke="#C9A43A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div class="qual-txt"><strong>Perde receita</strong> em faturamento inconsistente, retrabalho e baixa previsibilidade de caixa</div>
+          </div>
+          <div class="qual-item rv d3">
+            <div class="qual-check"><svg viewBox="0 0 10 8" fill="none"><polyline points="1,4 3.5,6.5 9,1" stroke="#C9A43A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div class="qual-txt"><strong>Depende de pessoas</strong> para que os processos funcionem — e sabe que isso &eacute; risco</div>
+          </div>
+          <div class="qual-item rv d4">
+            <div class="qual-check"><svg viewBox="0 0 10 8" fill="none"><polyline points="1,4 3.5,6.5 9,1" stroke="#C9A43A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div class="qual-txt"><strong>Quer escalar</strong> de forma previs&iacute;vel, com controle real sobre contratos, carteira e margem</div>
+          </div>
+        </div>
+      </div>
+      <div class="rv d2">
+        <div class="qual-nope">
+          <div class="qual-nope-title">Este trabalho n&atilde;o &eacute; para voc&ecirc; se:</div>
+          <div class="qual-nope-list">
+            <div class="qual-nope-item">Sua empresa ainda n&atilde;o tem opera&ccedil;&atilde;o comercial ativa</div>
+            <div class="qual-nope-item">Voc&ecirc; busca treinamento gen&eacute;rico ou consultoria de plano de neg&oacute;cios</div>
+            <div class="qual-nope-item">N&atilde;o tem abertura para revisar processos internos</div>
+          </div>
+        </div>
+        <div style="margin-top:1.5rem;padding:1.25rem 1.5rem;background:rgba(201,164,58,0.06);border-left:2px solid var(--gold);border-radius:0 2px 2px 0;">
+          <p style="font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--gold-pale);font-style:italic;line-height:1.6;">"J&aacute; estive dentro do caos operacional — sem processos, sem tempo, com cliente bravo na linha. Sei o que custa n&atilde;o ter estrutura. E sei o que muda quando voc&ecirc; tem."</p>
+          <p style="font-size:0.6rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--gold);margin-top:0.75rem;">— Carolinne Braz</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEMA -->
+<section class="sec" id="problema">
+  <div class="container">
+    <div class="prob-lay">
+      <div>
+        <span class="eyebrow">O que est&aacute; custando caro</span>
+        <h2 class="stitle">O crescimento sem estrutura<br><em>cobra uma conta silenciosa</em></h2>
+        <div class="pain-list">
+          <div class="pain-item rv">
+            <div class="pain-bar"></div>
+            <div class="pain-txt"><strong>Faturamento com vazamento</strong> — cobran&ccedil;as fora do prazo, crit&eacute;rios inconsistentes e cl&aacute;usulas contratuais que ningu&eacute;m sabe aplicar.</div>
+          </div>
+          <div class="pain-item rv d1">
+            <div class="pain-bar"></div>
+            <div class="pain-txt"><strong>Carteira de clientes sem controle real</strong> — contratos espalhados, vencimentos &ldquo;de cabe&ccedil;a&rdquo; e nenhuma vis&atilde;o consolidada da base.</div>
+          </div>
+          <div class="pain-item rv d2">
+            <div class="pain-bar"></div>
+            <div class="pain-txt"><strong>Processos que vivem em pessoas</strong> — quando um colaborador sai, a opera&ccedil;&atilde;o vai junto. Zero documenta&ccedil;&atilde;o, zero transfer&ecirc;ncia.</div>
+          </div>
+          <div class="pain-item rv d3">
+            <div class="pain-bar"></div>
+            <div class="pain-txt"><strong>Time permanentemente reativo</strong> — apaga inc&ecirc;ndio em vez de construir. Velocidade de gest&atilde;o n&atilde;o escala com velocidade comercial.</div>
+          </div>
+          <div class="pain-item rv d4">
+            <div class="pain-bar"></div>
+            <div class="pain-txt"><strong>Energia por assinatura sem produto definido</strong> — &eacute; prometida, mas n&atilde;o &eacute; entregue com consist&ecirc;ncia. Cada cliente &eacute; uma opera&ccedil;&atilde;o diferente.</div>
+          </div>
+        </div>
+      </div>
+      <div class="insight-wrap rv d2">
+        <div class="insight-card">
+          <div class="iq">Crescimento sem estrutura n&atilde;o &eacute; crescimento.<br>&Eacute; <em>d&iacute;vida operacional</em> acumulando.</div>
+          <div class="idiv"></div>
+          <div class="inote">A cada novo cliente sem processo estabelecido, voc&ecirc; aumenta a carga sobre um sistema j&aacute; no limite. Chega um ponto em que o pr&oacute;ximo contrato fechado &eacute; mais problema do que receita. Estrutura &eacute; o que separa quem escala de quem implode crescendo.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MÉTODO OSE -->
+<section class="method-sec" id="diagnostico">
+  <div class="method-name">OSE</div>
+  <div class="container" style="position:relative;z-index:1;">
+    <div class="rv">
+      <span class="eyebrow">O M&eacute;todo</span>
+      <h2 class="stitle">M&eacute;todo OSE —<br><em>Opera&ccedil;&atilde;o, Sistema, Escala</em></h2>
+      <p style="font-size:0.92rem;color:var(--body);max-width:560px;margin-top:0.75rem;line-height:1.8;">Uma metodologia desenvolvida especificamente para empresas de energia por assinatura que j&aacute; vendem e precisam operar com consist&ecirc;ncia.</p>
+    </div>
+    <div class="method-grid">
+      <div class="mstep rv">
+        <div class="mstep-accent"></div>
+        <div class="mstep-letter">O</div>
+        <div class="mstep-phase">Fase 01 · Opera&ccedil;&atilde;o</div>
+        <div class="mstep-title">Diagn&oacute;stico Operacional</div>
+        <div class="mstep-desc">Mapeamento cirúrgico da opera&ccedil;&atilde;o atual: onde est&atilde;o os pontos de perda financeira, as depend&ecirc;ncias de pessoas e os gargalos que limitam escala.</div>
+        <div class="mstep-deliverables">
+          <div class="mstep-del">Mapa de processos cr&iacute;ticos</div>
+          <div class="mstep-del">Identifica&ccedil;&atilde;o de vazamentos de receita</div>
+          <div class="mstep-del">Plano de prioriza&ccedil;&atilde;o estrutural</div>
+        </div>
+      </div>
+      <div class="mstep rv d1">
+        <div class="mstep-accent"></div>
+        <div class="mstep-letter">S</div>
+        <div class="mstep-phase">Fase 02 · Sistema</div>
+        <div class="mstep-title">Estrutura&ccedil;&atilde;o dos Sistemas</div>
+        <div class="mstep-desc">Constru&ccedil;&atilde;o dos processos operacionais, arquitetura de faturamento e gest&atilde;o de carteira — padronizados, documentados e independentes de pessoas.</div>
+        <div class="mstep-deliverables">
+          <div class="mstep-del">Fluxos de onboarding, cobran&ccedil;a e distrato</div>
+          <div class="mstep-del">R&eacute;guas de comunica&ccedil;&atilde;o por jornada de cliente</div>
+          <div class="mstep-del">Processos documentados e replic&aacute;veis</div>
+        </div>
+      </div>
+      <div class="mstep rv d2">
+        <div class="mstep-accent"></div>
+        <div class="mstep-letter">E</div>
+        <div class="mstep-phase">Fase 03 · Escala</div>
+        <div class="mstep-title">Produto para Escalar</div>
+        <div class="mstep-desc">Transforma&ccedil;&atilde;o da opera&ccedil;&atilde;o estruturada em produto escal&aacute;vel — incluindo produto digital (SaaS) integrado &agrave; l&oacute;gica do neg&oacute;cio.</div>
+        <div class="mstep-deliverables">
+          <div class="mstep-del">Energia modelada como produto</div>
+          <div class="mstep-del">Portal do cliente e portal operacional</div>
+          <div class="mstep-del">Base para crescimento previs&iacute;vel</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVIÇOS -->
+<section class="sec sec-alt" id="servicos">
+  <div class="container">
+    <div class="rv" style="margin-bottom:3.5rem;">
+      <span class="eyebrow">Frentes de trabalho</span>
+      <h2 class="stitle">O que &eacute; entregue<br><em>em cada projeto</em></h2>
+    </div>
+    <div class="srv-grid">
+      <div class="scard rv">
+        <div class="sbar"></div>
+        <div class="snum">01</div>
+        <svg class="sico" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="4" width="24" height="24" rx="2"/><path d="M9 16h14M9 11h14M9 21h8" stroke-linecap="round"/></svg>
+        <div class="sttl">Arquitetura de Faturamento</div>
+        <div class="sdsc">Ciclo de cobran&ccedil;a desenhado para energia por assinatura — com crit&eacute;rios de c&aacute;lculo, r&eacute;guas de comunica&ccedil;&atilde;o e prote&ccedil;&atilde;o contra inadimpl&ecirc;ncia operacional.</div>
+      </div>
+      <div class="scard rv d1">
+        <div class="sbar"></div>
+        <div class="snum">02</div>
+        <svg class="sico" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 8h20M6 16h20M6 24h12" stroke-linecap="round" stroke-width="1.8"/></svg>
+        <div class="sttl">Processos Operacionais</div>
+        <div class="sdsc">Documenta&ccedil;&atilde;o e padroniza&ccedil;&atilde;o de todos os fluxos cr&iacute;ticos — onboarding, gest&atilde;o de contratos, renegocia&ccedil;&otilde;es e churns — funcionando sem depend&ecirc;ncia de pessoas.</div>
+      </div>
+      <div class="scard rv d2">
+        <div class="sbar"></div>
+        <div class="snum">03</div>
+        <svg class="sico" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="16" cy="11" r="5"/><path d="M6 27c0-5.523 4.477-10 10-10s10 4.477 10 10" stroke-linecap="round"/></svg>
+        <div class="sttl">Gest&atilde;o de Carteira</div>
+        <div class="sdsc">Estrutura para controle real da base de assinantes — consumo, contratos, vencimentos e hist&oacute;rico — com visibilidade total e alertas operacionais.</div>
+      </div>
+      <div class="scard rv d1">
+        <div class="sbar"></div>
+        <div class="snum">04</div>
+        <svg class="sico" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="16" cy="16" r="7"/><path d="M16 6v2M16 24v2M6 16H4M28 16h-2M9.17 9.17l1.42 1.42M21.41 21.41l1.42 1.42M9.17 22.83l1.42-1.42M21.41 10.59l1.42-1.42" stroke-linecap="round"/></svg>
+        <div class="sttl">Energia como Produto</div>
+        <div class="sdsc">Transforma&ccedil;&atilde;o da distribui&ccedil;&atilde;o de energia em produto com proposta de valor clara, tier de servi&ccedil;o e modelo de entrega replicable e escal&aacute;vel.</div>
+      </div>
+      <div class="scard rv d2">
+        <div class="sbar"></div>
+        <div class="snum">05</div>
+        <svg class="sico" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 22l8-8 4 4 8-12" stroke-linecap="round" stroke-linejoin="round"/><path d="M26 10h-6V4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div class="sttl">P&oacute;s-venda &amp; Reten&ccedil;&atilde;o</div>
+        <div class="sdsc">Rotinas estruturadas de acompanhamento p&oacute;s-contrato que reduzem churn, aumentam LTV e geram previsibilidade de receita recorrente.</div>
+      </div>
+      <div class="scard rv d3">
+        <div class="sbar"></div>
+        <div class="snum">06</div>
+        <svg class="sico" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="4"/><circle cx="24" cy="8" r="4"/><circle cx="16" cy="24" r="4"/><path d="M12 8h8M10.83 10.83l3.54 9.34M21.17 10.83l-3.54 9.34" stroke-linecap="round"/></svg>
+        <div class="sttl">Integra&ccedil;&atilde;o Estrat&eacute;gica</div>
+        <div class="sdsc">Opera&ccedil;&atilde;o, financeiro e estrat&eacute;gia conectados em uma vis&atilde;o &uacute;nica — para que decis&otilde;es de crescimento sejam baseadas em n&uacute;meros reais, n&atilde;o em sensa&ccedil;&otilde;es.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROVA / RESULTADOS -->
+<section class="proof-sec" id="resultados">
+  <div class="container">
+    <div class="rv">
+      <span class="eyebrow">Resultados e Evid&ecirc;ncias</span>
+      <h2 class="stitle">O que muda depois<br><em>da estrutura&ccedil;&atilde;o</em></h2>
+      <p style="font-size:0.92rem;color:var(--body);max-width:520px;margin-top:0.75rem;line-height:1.8;">Resultados baseados em opera&ccedil;&otilde;es reais estruturadas no setor de energia.</p>
+    </div>
+    <div class="proof-grid">
+      <div class="proof-card rv">
+        <svg class="proof-card-ico" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M4 28l8-10 6 6 8-14 6 8" stroke-linecap="round" stroke-linejoin="round" stroke="#C9A43A"/></svg>
+        <div class="proof-stat">-60<span>%</span></div>
+        <div class="proof-label">Redu&ccedil;&atilde;o em retrabalho</div>
+        <div class="proof-desc">Opera&ccedil;&otilde;es que documentam e padronizam processos cr&iacute;ticos eliminam at&eacute; 60% das atividades repetitivas e erros recorrentes no faturamento.</div>
+      </div>
+      <div class="proof-card rv d1">
+        <svg class="proof-card-ico" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="4" y="4" width="28" height="28" rx="2"/><path d="M12 18l6 6 10-12" stroke="#C9A43A" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div class="proof-stat">3<span>x</span></div>
+        <div class="proof-label">Capacidade de escala</div>
+        <div class="proof-desc">Empresas com opera&ccedil;&atilde;o estruturada conseguem triplicar a carteira de clientes sem proporcionalidade de time — o processo trabalha por voc&ecirc;.</div>
+      </div>
+      <div class="proof-card rv d2">
+        <svg class="proof-card-ico" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="18" cy="18" r="13"/><path d="M18 10v8l5 5" stroke="#C9A43A" stroke-linecap="round"/></svg>
+        <div class="proof-stat">+90<span>dias</span></div>
+        <div class="proof-label">Para previsibilidade de caixa</div>
+        <div class="proof-desc">Em at&eacute; 90 dias de implementa&ccedil;&atilde;o, opera&ccedil;&otilde;es passam a ter visibilidade de faturamento futuro e controle real sobre inadimpl&ecirc;ncia operacional.</div>
+      </div>
+    </div>
+
+    <!-- DEPOIMENTO PLACEHOLDER -->
+    </div>
+</section>
+
+<!-- DIFERENCIAL -->
+<div class="divider-wrap"><div class="sec-divider"><div class="sec-divider-ico"></div></div></div>
+<section class="sec" id="diferencial">
+  <div class="container">
+    <div class="dif-lay">
+      <div>
+        <span class="eyebrow">Por que &eacute; diferente</span>
+        <h2 class="stitle">Consultores falam de opera&ccedil;&atilde;o.<br><em>Eu constru&iacute; uma.</em></h2>
+        <div class="ck-list">
+          <div class="ck-item rv"><div class="ck-ico"><svg viewBox="0 0 10 8" fill="none"><polyline points="1,4 3.5,6.5 9,1" stroke="#08172E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ck-txt">Experi&ecirc;ncia direta em opera&ccedil;&otilde;es de energia por assinatura — n&atilde;o em consultoria gen&eacute;rica</div></div>
+          <div class="ck-item rv d1"><div class="ck-ico"><svg viewBox="0 0 10 8" fill="none"><polyline points="1,4 3.5,6.5 9,1" stroke="#08172E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ck-txt">M&eacute;todo OSE desenhado para o ciclo espec&iacute;fico do setor — n&atilde;o adaptado de outro mercado</div></div>
+          <div class="ck-item rv d2"><div class="ck-ico"><svg viewBox="0 0 10 8" fill="none"><polyline points="1,4 3.5,6.5 9,1" stroke="#08172E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ck-txt">Entrego estrutura documentada e replicável — n&atilde;o um plano que fica na gaveta</div></div>
+          <div class="ck-item rv d3"><div class="ck-ico"><svg viewBox="0 0 10 8" fill="none"><polyline points="1,4 3.5,6.5 9,1" stroke="#08172E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ck-txt">Vis&atilde;o integrada: processo + produto digital + financeiro — n&atilde;o consultoria em silos</div></div>
+          <div class="ck-item rv d4"><div class="ck-ico"><svg viewBox="0 0 10 8" fill="none"><polyline points="1,4 3.5,6.5 9,1" stroke="#08172E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ck-txt">Atua&ccedil;&atilde;o ao lado do time — n&atilde;o &agrave; dist&acirc;ncia com recomenda&ccedil;&otilde;es de PowerPoint</div></div>
+        </div>
+      </div>
+      <div class="rv d2">
+        <div class="dif-qbox">
+          <div class="dif-q">"Passei por opera&ccedil;&otilde;es sem processo, com time sobrecarregado e cliente cr&iacute;tico na linha. N&atilde;o fa&ccedil;o diagn&oacute;stico de fora. <span>Entro, construo e treino — at&eacute; a opera&ccedil;&atilde;o andar sozinha.</span>"</div>
+          <div class="dif-au">&mdash; Carolinne Braz</div>
+        </div>
+        <div style="margin-top:1.5rem;">
+          <a href="https://wa.me/5585981575800" class="btn btn-g" style="width:100%;justify-content:center;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> Solicitar Diagn&oacute;stico Gratuito
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTADO -->
+<section class="sec sec-alt">
+  <div class="container">
+    <div class="res-lay">
+      <div>
+        <span class="eyebrow rv">O que muda na pr&aacute;tica</span>
+        <h2 class="stitle rv">Ap&oacute;s a estrutura&ccedil;&atilde;o,<br><em>sua opera&ccedil;&atilde;o passa a ter</em></h2>
+        <div class="res-list">
+          <div class="res-item rv"><div class="res-arr">&rarr;</div><div class="res-txt">Faturamento padronizado — sem varia&ccedil;&atilde;o entre clientes, sem perda de receita por crit&eacute;rio inconsistente</div></div>
+          <div class="res-item rv d1"><div class="res-arr">&rarr;</div><div class="res-txt">Carteira de assinantes com visibilidade total — consumo, contratos, vencimentos e alertas em um s&oacute; lugar</div></div>
+          <div class="res-item rv d2"><div class="res-arr">&rarr;</div><div class="res-txt">Processos que funcionam sem dep&ecirc;nder de quem os criou</div></div>
+          <div class="res-item rv d3"><div class="res-arr">&rarr;</div><div class="res-txt">Previsibilidade de caixa real — n&atilde;o estimativa, mas controle baseado em dados</div></div>
+          <div class="res-item rv d4"><div class="res-arr">&rarr;</div><div class="res-txt">Base para triplicar a carteira sem triplicar o time</div></div>
+          <div class="res-item rv d5"><div class="res-arr">&rarr;</div><div class="res-txt">Produto digital integrado &agrave; opera&ccedil;&atilde;o — cliente com acesso, time com controle</div></div>
+        </div>
+        <div class="res-callout rv">
+          <p>Voc&ecirc; para de operar no limite. E come&ccedil;a a decidir com clareza.</p>
+        </div>
+      </div>
+      <div>
+        <div class="res-cta rv d2">
+          <div class="res-cta-top"></div>
+          <div class="res-cta-bd">
+            <h3>Cada m&ecirc;s sem estrutura &eacute; margem desperdi&ccedil;ada.</h3>
+            <p>Faturamento inconsistente, retrabalho acumulado e decis&otilde;es baseadas em chute t&ecirc;m um custo real — que s&oacute; aparece quando &eacute; tarde demais para ignorar.</p>
+            <a href="https://wa.me/5585981575800" class="btn btn-g" style="width:100%;justify-content:center;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> Solicitar Diagn&oacute;stico Gratuito
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUTO DIGITAL -->
+<section class="sec" id="produto">
+  <div class="container">
+    <div class="prod-lay">
+      <div class="rv">
+        <span class="eyebrow">Produto Digital</span>
+        <h2 class="stitle">Opera&ccedil;&atilde;o estruturada.<br><em>Agora automatizada.</em></h2>
+        <div class="prod-ctx">
+          <p class="prod-ctx-txt">
+            Estrutura sem tecnologia chega a um teto. Ap&oacute;s os processos estabelecidos, o produto digital &eacute; o que transforma opera&ccedil;&atilde;o estruturada em <strong>escala com velocidade</strong> — sem aumentar carga sobre o time.
+          </p>
+        </div>
+        <div class="parceria">
+          <div class="pdot"></div>
+          <div class="ptxt"><strong>Em parceria com um desenvolvedor especialista</strong> — eu domino o neg&oacute;cio, ele constr&oacute;i o produto. Sem o gap cl&aacute;ssico entre quem entende a opera&ccedil;&atilde;o e quem programa o sistema.</div>
+        </div>
+        <a href="https://wa.me/5585981575800" class="btn btn-g">
+          Quero saber sobre produto digital <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+      <div class="pcards">
+        <div class="pcard rv">
+          <div class="pcard-acc"></div>
+          <div class="pcard-hd">
+            <svg class="pcard-ico" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="5" width="30" height="26" rx="2"/><path d="M3 11h30" stroke-linecap="round"/><circle cx="8" cy="8" r="1" fill="currentColor" stroke="none"/><circle cx="13" cy="8" r="1" fill="currentColor" stroke="none"/><path d="M10 18h16M10 23h10" stroke-linecap="round"/></svg>
+            <span class="pcard-badge">Site</span>
+          </div>
+          <div class="pcard-ttl">Site Institucional</div>
+          <div class="pcard-dsc">Presen&ccedil;a digital que converte: proposta de valor clara, prova de credibilidade e CTA que gera contato qualificado.</div>
+          <div class="pcard-tags"><span class="ptag">Convers&atilde;o</span><span class="ptag">Credibilidade</span><span class="ptag">SEO</span></div>
+        </div>
+        <div class="pcard rv d1">
+          <div class="pcard-acc"></div>
+          <div class="pcard-hd">
+            <svg class="pcard-ico" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="18" cy="13" r="7"/><path d="M6 32c0-6.627 5.373-12 12-12s12 5.373 12 12" stroke-linecap="round"/></svg>
+            <span class="pcard-badge">Portal</span>
+          </div>
+          <div class="pcard-ttl">Portal do Assinante</div>
+          <div class="pcard-dsc">O cliente acessa consumo, faturas e hist&oacute;rico sem acionar o suporte. Reduz opera&ccedil;&atilde;o reativa e aumenta percep&ccedil;&atilde;o de valor do servi&ccedil;o.</div>
+          <div class="pcard-tags"><span class="ptag">Self-service</span><span class="ptag">Reten&ccedil;&atilde;o</span><span class="ptag">Transpar&ecirc;ncia</span></div>
+        </div>
+        <div class="pcard rv d2">
+          <div class="pcard-acc"></div>
+          <div class="pcard-hd">
+            <svg class="pcard-ico" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="30" height="30" rx="2"/><path d="M3 13h30M13 3v30" stroke-linecap="round"/><path d="M19 19h10M19 24h7" stroke-linecap="round"/></svg>
+            <span class="pcard-badge">Opera&ccedil;&atilde;o</span>
+          </div>
+          <div class="pcard-ttl">Painel Operacional Interno</div>
+          <div class="pcard-dsc">Carteira, faturamento e indicadores centralizados — auditável, sem planilha, com vis&atilde;o de gestor em tempo real.</div>
+          <div class="pcard-tags"><span class="ptag">Efici&ecirc;ncia</span><span class="ptag">Controle</span><span class="ptag">Visibilidade</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOBRE -->
+<div class="divider-wrap"><div class="sec-divider"><div class="sec-divider-ico"></div></div></div>
+<section class="sec" id="sobre">
+  <div class="container">
+    <div class="sob-lay">
+      <div class="sob-txt rv">
+        <span class="eyebrow">Quem estrutura</span>
+        <h2 class="stitle" style="margin-bottom:1.5rem;">Carolinne Braz</h2>
+
+       <p>Nascida em Minas Gerais, me mudei para o Nordeste com um objetivo claro: trabalhar com energias renov&aacute;veis. Foi na energia solar, desde 2022, que constru&iacute; minha trajet&oacute;ria — atuando de ponta a ponta: projeto, O&amp;M, gest&atilde;o de ativos, cr&eacute;ditos de energia, GD e Gera&ccedil;&atilde;o Centralizada, com interface direta com distribuidoras em todo o Brasil e ANEEL.</p>
+       
+       <p>Em 2024, entrei na energia por assinatura e identifiquei o principal padr&atilde;o do setor: <strong>o problema raramente est&aacute; no modelo — est&aacute; na opera&ccedil;&atilde;o.</strong></p>
+       
+       <p>Atuei duas vezes na estrutura&ccedil;&atilde;o de opera&ccedil;&otilde;es do zero, criando processos, fluxos e jornadas que funcionam com consist&ecirc;ncia e independ&ecirc;ncia.</p>
+       
+       <p>Como Coordenadora de Opera&ccedil;&otilde;es e Produto, <strong>escalei de 3 para 15 usinas sob gest&atilde;o</strong>, mantendo controle e previsibilidade. Sa&iacute; de um cen&aacute;rio de churn constante para uma opera&ccedil;&atilde;o est&aacute;vel, com redu&ccedil;&atilde;o significativa das perdas — mesmo com crescimento cont&iacute;nuo da base.</p>
+       
+       <p>Esse resultado tamb&eacute;m foi sustentado pelo alinhamento entre comercial e opera&ccedil;&atilde;o: treinei o time para <strong>vender com expectativa realista e entrega consistente.</strong></p>
+       
+       <p>Al&eacute;m disso, liderei times, atuei no desenvolvimento de produto digital e assumi diretamente casos cr&iacute;ticos — revertendo insatisfa&ccedil;&otilde;es e evitando sa&iacute;das.</p>
+       
+       <p><strong>O M&eacute;todo OSE nasce dessa pr&aacute;tica: um sistema constru&iacute;do dentro da opera&ccedil;&atilde;o, para gerar estrutura, reten&ccedil;&atilde;o e escala.</strong></p>
+       
+       <p>Atuei na lideran&ccedil;a de times, produto digital e gest&atilde;o de casos cr&iacute;ticos, revertendo insatisfa&ccedil;&otilde;es e evitando sa&iacute;das.</p>
+
+        <div class="sob-tags" style="margin-top:1.5rem;">
+        </div>
+      </div>
+      <div class="rv d2">
+        <div class="sob-photo-card">
+          <div class="sob-photo-frame">
+            <img src="./Imagens/about.jpg" alt="Carolinne Braz em campo" />
+            <div class="sob-photo-overlay">
+              <div class="sob-photo-name">Carolinne Braz</div>
+              <div class="sob-photo-role">Coordenadora de Opera&ccedil;&otilde;es &amp; Produto</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<div class="divider-wrap"><div class="sec-divider"><div class="sec-divider-ico"></div></div></div>
+<section class="cta-fin">
+  <div class="cta-glow"></div>
+  <div class="container">
+    <div class="cta-fin-in rv">
+      <span class="eyebrow" style="justify-content:center;margin-bottom:1.75rem;">Pr&oacute;ximo passo</span>
+      <h2>Diagn&oacute;stico gratuito.<br><em>Clareza imediata.</em></h2>
+      <div class="cta-fin-sub">Sem compromisso. Sem gen&eacute;rico.</div>
+      <p>Em uma an&aacute;lise inicial, identif&iacute;co os pontos cr&iacute;ticos da sua opera&ccedil;&atilde;o e se o M&eacute;todo OSE &eacute; o caminho certo para voc&ecirc;. Se n&atilde;o for, eu digo isso tamb&eacute;m.</p>
+      <a href="https://wa.me/5585981575800" class="btn btn-g btn-lg">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> Solicitar Diagn&oacute;stico Gratuito
+      </a>
+      <div class="cta-urgency">
+        <div class="cta-urgency-dot"></div>
+        Vagas limitadas por ciclo de atendimento
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <svg style="margin:0 auto 1.4rem;display:block;opacity:0.35;" width="23" height="23" viewBox="0 0 26 26" fill="none">
+      <circle cx="13" cy="13" r="4.5" stroke="#C9A43A" stroke-width="1.2"/>
+      <line x1="13" y1="1.5" x2="13" y2="5" stroke="#C9A43A" stroke-width="1.2" stroke-linecap="round"/>
+      <line x1="13" y1="21" x2="13" y2="24.5" stroke="#C9A43A" stroke-width="1.2" stroke-linecap="round"/>
+      <line x1="1.5" y1="13" x2="5" y2="13" stroke="#C9A43A" stroke-width="1.2" stroke-linecap="round"/>
+      <line x1="21" y1="13" x2="24.5" y2="13" stroke="#C9A43A" stroke-width="1.2" stroke-linecap="round"/>
+      <line x1="4.4" y1="4.4" x2="6.8" y2="6.8" stroke="#C9A43A" stroke-width="1.2" stroke-linecap="round"/>
+      <line x1="19.2" y1="19.2" x2="21.6" y2="21.6" stroke="#C9A43A" stroke-width="1.2" stroke-linecap="round"/>
+      <line x1="21.6" y1="4.4" x2="19.2" y2="6.8" stroke="#C9A43A" stroke-width="1.2" stroke-linecap="round"/>
+      <line x1="6.8" y1="19.2" x2="4.4" y2="21.6" stroke="#C9A43A" stroke-width="1.2" stroke-linecap="round"/>
+    </svg>
+    <div class="ft">A opera&ccedil;&atilde;o que n&atilde;o tem estrutura<br>n&atilde;o tem futuro.</div>
+    <div class="fs">&copy; 2025 Carolinne Braz &middot; M&eacute;todo OSE &middot; Energia por Assinatura</div>
+  </div>
+</footer>
+
+<script>
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('on'); obs.unobserve(e.target); } });
+}, { threshold: 0.06, rootMargin: '0px 0px -30px 0px' });
+document.querySelectorAll('.rv').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
